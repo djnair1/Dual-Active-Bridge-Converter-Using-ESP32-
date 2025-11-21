@@ -1,0 +1,37 @@
+#define S1_S4 D1  // Switches S1 and S4
+#define S2_S3 D2  // Switches S2 and S3 (complementary signal)
+
+const int frequency = 10000;  // PWM frequency in Hz
+const int duty_cycle = 128;   // 50% duty cycle (0-255 scale)
+const int period = 1000000 / frequency;  // Period in microseconds
+const int dead_time = 0.2;   // Dead time in microseconds (adjust as needed)
+
+void setup() {
+  pinMode(S1_S4, OUTPUT);
+  pinMode(S2_S3, OUTPUT);
+  
+  analogWriteFreq(frequency);  // Set PWM frequency
+
+  // Generate 50% duty cycle PWM with complementary signals
+  analogWrite(S1_S4, duty_cycle); // 50% duty cycle on S1 & S4
+  analogWrite(S2_S3, 255 - duty_cycle); // Complementary signal on S2 & S3
+}
+
+void loop() {
+  // Turn S1_S4 ON, S2_S3 OFF
+  digitalWrite(S1_S4, HIGH);
+  digitalWrite(S2_S3, LOW);
+  delayMicroseconds((period / 2));  // Active time for first state
+
+  // Introduce dead time before switching
+  digitalWrite(S1_S4, LOW);
+  delayMicroseconds(dead_time);
+
+  // Turn S1_S4 OFF, S2_S3 ON
+  digitalWrite(S2_S3, HIGH);
+  delayMicroseconds((period / 2));  // Active time for second state
+
+  // Introduce dead time before switching back
+  digitalWrite(S2_S3, LOW);
+  delayMicroseconds(dead_time);
+}
