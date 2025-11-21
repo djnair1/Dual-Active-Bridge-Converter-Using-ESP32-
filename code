@@ -23,13 +23,7 @@ void loop() {
   digitalWrite(S2_S3, LOW);
   delayMicroseconds((period / 2));  // Active time for first state
 
-  // Introduce dead time before switching
-  digitalWrite(S1_S4, LOW);
-  delayMicroseconds(dead_time);
 
-  // Turn S1_S4 OFF, S2_S3 ON
-  digitalWrite(S2_S3, HIGH);
-  delayMicroseconds((period / 2));  // Active time for second state
 
   // Introduce dead time before switching back
   digitalWrite(S2_S3, LOW);
